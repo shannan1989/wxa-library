@@ -1,3 +1,9 @@
+@import 'animate.wxss';
+
+button {
+    padding: 0;
+}
+
 .clearfix:after {
     content: '';
     display: table;
