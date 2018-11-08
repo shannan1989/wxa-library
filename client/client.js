@@ -76,6 +76,7 @@ let client = {
             success: (res) => {
                 if (res.authSetting['scope.userInfo']) {
                     wx.getUserInfo({
+                        lang: 'zh_CN',
                         success: (res) => {
                             this._doAuth('full', res);
                         }
