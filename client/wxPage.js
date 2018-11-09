@@ -58,7 +58,7 @@ let WxPage = function (options) {
             }
 
             let successCallback = () => {
-                client.request({
+                opts.request && client.request({
                     type: opts.request.type,
                     data: opts.request.data,
                     success: (res) => {
