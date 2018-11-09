@@ -78,6 +78,8 @@ let WxPage = function (options) {
                         opts.request.complete && opts.request.complete(res);
                     }
                 });
+
+                opts.request || this.setData({ loadStatus: 'success' });
             };
 
             if (!opts.auth) {// 无需登录
