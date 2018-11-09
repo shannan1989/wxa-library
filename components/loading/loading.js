@@ -16,6 +16,7 @@ Component({
         }
     },
     methods: {
+        onTouchMove: function () { },
         show: function () {
             //let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             //e.title && this.setData({ title: e.title });
