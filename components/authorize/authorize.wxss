@@ -5,34 +5,43 @@
     top: 0;
     bottom: 0;
     z-index: 1001;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: linear-gradient(to top, #fff, rgba(255, 255, 255, 0.9) 30%, rgba(255, 255, 255, 0.1) 100%);
+}
+
+.authorize_wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .authorize_tips {
-    margin-top: 300rpx;
     text-align: center;
 }
 
 .authorize_tip1 {
-    color: #292621;
+    color: #2c2c39;
     font-size: 32rpx;
     line-height: 60rpx;
 }
 
 .authorize_tip2 {
-    color: #b0a99e;
+    color: #9b9ba3;
     font-size: 28rpx;
-    line-height: 50rpx;
+    line-height: 60rpx;
 }
 
 .authorize_button {
-    margin: 100rpx auto 50rpx;
-    width: 600rpx;
+    margin: 60rpx auto;
+    width: 400rpx;
     line-height: 90rpx;
-    border-radius: 46rpx;
-    background-color: #ff6262;
+    border-radius: 90rpx;
+    background-color: #96d65d;
     text-align: center;
     color: #fff;
-    font-size: 36rpx;
-    padding: 0;
+    font-size: 32rpx;
+}
+
+.authorize_button::after {
+    border: 0;
 }
