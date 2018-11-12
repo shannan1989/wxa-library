@@ -36,7 +36,7 @@
     width: 400rpx;
     line-height: 90rpx;
     border-radius: 90rpx;
-    background-color: #96d65d;
+    background-color: #44b549;
     text-align: center;
     color: #fff;
     font-size: 32rpx;
