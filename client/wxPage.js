@@ -14,21 +14,6 @@ function prependFunction(options, name, func) {
     }
 }
 
-function a(options, name, func) {
-    if (options[name]) {
-        var s = options[name];
-        options[name] = function (e) {
-            var n = s.call(this, e);
-            func.call(this, [e, n], name);
-            return n;
-        };
-    } else {
-        options[name] = function (e) {
-            func.call(this, e, name);
-        };
-    }
-}
-
 let WxPage = function (options) {
     let wxPage = options.wxPage;
 
