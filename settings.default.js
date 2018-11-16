@@ -4,7 +4,12 @@ let settings = {
     debugRequestUrl: '',
     app: '',
     appName: '',
-    appVersion: ''
+    appVersion: '',
+    ald: {
+        enable: false,
+        appKey: '',
+        getLocation: true
+    }
 };
 
 export default settings;
