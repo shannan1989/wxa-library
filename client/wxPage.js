@@ -97,6 +97,37 @@ let WxPage = function (options) {
         };
     }
 
+    if (wxPage && wxPage.enableNextPage) {
+        options.__onLoad = options.onLoad;
+        options.onLoad = function (opts) {
+            if (opts.nextPage) {
+                this.__opts = opts;
+                this.__navigating = true;
+                wx.navigateTo({
+                    url: decodeURIComponent(opts.nextPage),
+                    success: () => {
+                        this.__navigating = false;
+                    },
+                    fail: () => {
+                        this.__navigating = false;
+                        this.__onLoad(this.__opts);
+                        this.__opts = null;
+                    }
+                })
+            } else {
+                this.__onLoad(opts);
+            }
+        };
+        prependFunction(options, 'onShow', function () {
+            if (this.__navigating == true || !this.__opts) {
+                return;
+            }
+            this.__navigating = false;
+            this.__onLoad(this.__opts);
+            this.__opts = null;
+        });
+    }
+
     Page(options);
 };
 
