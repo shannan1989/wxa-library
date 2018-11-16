@@ -1,5 +1,5 @@
+import settings from '../settings.js';
 import client from 'client.js';
-import settings from '../../settings.js';
 
 let formIds = [], times = 0, storageKey = '_formTimes';
 
