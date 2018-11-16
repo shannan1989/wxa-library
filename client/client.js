@@ -1,4 +1,4 @@
-import settings from '../../settings.js';
+import settings from '../settings.js';
 import cookie from 'cookie.js';
 import cache from 'cache.js';
 
