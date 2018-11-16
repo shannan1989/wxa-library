@@ -1,3 +1,8 @@
+import settings from '../settings.js';
+
+if (settings.ald.enable) {
+    let aldstat = require("../ald/ald-stat.js");
+}
 
 function prependFunction(options, name, func) {
     if (options[name]) {
