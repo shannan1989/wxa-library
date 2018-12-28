@@ -15,3 +15,10 @@ button {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.ellipsis-2-lines {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
