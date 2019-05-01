@@ -14,6 +14,10 @@ let client = {
         }
 
         data._cookies = cookie.getAll();
+        data._agent = {
+            app: settings.app,
+            appVersion: settings.appVersion
+        };
 
         if (params.type) {
             data.type = params.type;
