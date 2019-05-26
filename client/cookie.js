@@ -1,9 +1,9 @@
 let cookie = {
     _cookies: {},
-    add: function (key, value) {
+    add(key, value) {
         this._cookies[key] = value;
     },
-    getAll:function(){
+    getAll() {
         return this._cookies;
     }
 };

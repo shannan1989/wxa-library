@@ -24,12 +24,11 @@ Component({
     data: {
         authing: false
     },
-    attached: function () { },
     methods: {
-        onRefresh: function () {
+        onRefresh() {
             this.triggerEvent('Refresh', {}, {});
         },
-        onAuthOK: function () {
+        onAuthOK() {
             let data = { authing: false };
             if (this.data.status == 'auth') {
                 data.status = 'loading';

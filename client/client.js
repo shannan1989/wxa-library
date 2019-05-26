@@ -3,7 +3,7 @@ import cookie from 'cookie.js';
 import cache from 'cache.js';
 
 let client = {
-    request: function (params) {
+    request(params) {
         let url = '', data = {}, header = {};
 
         if (params.url) {
@@ -60,13 +60,13 @@ let client = {
             }
         });
     },
-    fullAuth: function (options = {}, authInfo = true) {
+    fullAuth(options = {}, authInfo = true) {
         return this._auth(options, authInfo);
     },
-    baseAuth: function (options) {
+    baseAuth(options) {
         return this._auth(options);
     },
-    _auth: function (options, authInfo = false) {
+    _auth(options, authInfo = false) {
         if (options.success) {
             this._addCallback(authInfo === false ? 'baseAuth' : 'fullAuth', options);
         }
@@ -111,7 +111,7 @@ let client = {
         });
     },
     _doAuthing: 0,
-    _doAuth: function (authType = 'base', authInfo = false) {
+    _doAuth(authType = 'base', authInfo = false) {
 
         if (authType == 'base') {
             if (this.baseAuthed()) {
@@ -174,28 +174,28 @@ let client = {
             }
         });
     },
-    getUser: function () {
+    getUser() {
         return cache.get('user');
     },
-    baseAuthed: function () {
+    baseAuthed() {
         let user = this.getUser();
         return user != null;
     },
-    fullAuthed: function () {
+    fullAuthed() {
         let user = this.getUser();
         return user && user.fullAuth ? true : false;
     },
     _callbacks: {},
-    _addCallback: function (key, obj) {
+    _addCallback(key, obj) {
         if (!this._callbacks[key]) {
             this._callbacks[key] = [];
         }
         this._callbacks[key].push(obj);
     },
-    _hasCallback: function (key) {
+    _hasCallback(key) {
         return !!(this._callbacks[key]) && this._callbacks[key].length > 0;
     },
-    _triggerCallbacks: function (key, callbackType, data, clear = true) {
+    _triggerCallbacks(key, callbackType, data, clear = true) {
         if (!this._callbacks[key]) {
             return;
         }

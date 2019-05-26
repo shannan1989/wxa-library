@@ -26,7 +26,7 @@ Component({
         }
     },
     data: {},
-    attached: function () {
+    attached() {
         let info = wx.getSystemInfoSync();
         this._windowHeight = info.windowHeight;
         this._platform = info.platform;
@@ -47,7 +47,7 @@ Component({
         }
     },
     methods: {
-        onTapScrollTop: function () {
+        onTapScrollTop() {
             wx.pageScrollTo({
                 scrollTop: 0,
                 duration: this._platform == 'android' ? 1000 : 0

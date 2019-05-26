@@ -1,13 +1,13 @@
 let cache = {
     _caches: {},
-    add: function (key, data) {
+    add(key, data) {
         this._caches[key] = {
             key: key,
             data: data,
             expire: 0
         };
     },
-    get: function (key) {
+    get(key) {
         let d = this._caches[key];
         if (!d) {
             return null;

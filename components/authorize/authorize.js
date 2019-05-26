@@ -5,13 +5,12 @@ Component({
     data: {
         hidden: false
     },
-    attached: function () { },
     methods: {
-        onTouchMove: function () { },
-        onTapButton: function () {
+        onTouchMove() { },
+        onTapButton() {
             this.setData({ hidden: true });
         },
-        onGetUserInfo: function (e) {
+        onGetUserInfo(e) {
             if (e.detail.userInfo) {
                 this.triggerEvent('AuthOK', {}, {});
                 client.fullAuth({}, e.detail);

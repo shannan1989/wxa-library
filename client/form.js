@@ -9,7 +9,7 @@ wx.getStorage({
 });
 
 let form = {
-    add: function (formId) {
+    add(formId) {
         if (formIds.indexOf(formId) < 0) {
             formIds.push(formId);
             times++;
@@ -27,7 +27,7 @@ let form = {
             this.flush();
         }
     },
-    flush: function () {
+    flush() {
         if (formIds.length > 0) {
             settings.debug && console.log('saveFormIds', formIds);
             client.request({

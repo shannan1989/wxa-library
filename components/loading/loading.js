@@ -10,14 +10,14 @@ Component({
         zIndex: 1000,
         hidden: true
     },
-    detached: function () {
+    detached() {
         if (this._timer) {
             clearTimeout(this._timer);
         }
     },
     methods: {
-        onTouchMove: function () { },
-        show: function () {
+        onTouchMove() { },
+        show() {
             //let e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {};
             //e.title && this.setData({ title: e.title });
 
@@ -33,7 +33,7 @@ Component({
                 this.setData({ hidden: false, opacityAnimation: animation.export() });
             }.bind(this), 10);
         },
-        hide: function () {
+        hide() {
             if (this._timer) {
                 clearTimeout(this._timer);
             }
