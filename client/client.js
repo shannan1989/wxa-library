@@ -60,115 +60,38 @@ let client = {
             }
         });
     },
-    fullAuth(options = {}, authInfo = true) {
-        return this._auth(options, authInfo);
-    },
-    baseAuth(options) {
-        return this._auth(options);
-    },
-    _auth(options, authInfo = false) {
-        if (options.success) {
-            this._addCallback(authInfo === false ? 'baseAuth' : 'fullAuth', options);
-        }
-
-        if (typeof authInfo == 'object') {
-            this._doAuth('full', authInfo);
-            return;
-        }
-
-        wx.getSetting({
-            success: (res) => {
-                if (res.authSetting['scope.userInfo']) {
-                    wx.getUserInfo({
-                        lang: 'zh_CN',
-                        success: (res) => {
-                            this._doAuth('full', res);
-                        }
-                    });
-                } else {
-                    if (authInfo === false) {
-                        this._doAuth('base');
-                    } else {
-                        if (options.auth) {
-                            options.auth();
-                        } else {
-                            this._triggerCallbacks('fullAuth', 'auth', null, false);
-                        }
-                    }
-                }
-            },
-            fail: () => {
-                if (authInfo === false) {
-                    this._doAuth('base');
-                } else {
-                    if (options.auth) {
-                        options.auth();
-                    } else {
-                        this._triggerCallbacks('fullAuth', 'auth', null, false);
-                    }
-                }
-            }
-        });
-    },
     _doAuthing: 0,
-    _doAuth(authType = 'base', authInfo = false) {
-
-        if (authType == 'base') {
-            if (this.baseAuthed()) {
-                this._triggerCallbacks('baseAuth', 'success', this.getUser());
-                return;
-            }
+    auth(options) {
+        if (options.success || options.fail) {
+            this._addCallback('Auth', options);
         }
 
-        if (authType == 'full') {
-            if (this.fullAuthed()) {
-                this._triggerCallbacks('baseAuth', 'success', this.getUser());
-                this._triggerCallbacks('fullAuth', 'success', this.getUser());
-                return;
-            }
-        }
-
-        if (this._doAuthing >= (authType == 'base' ? 1 : 2)) {
+        if (this.baseAuthed()) {
+            this._triggerCallbacks('Auth', 'success', this.getUser());
             return;
         }
-        this._doAuthing = (authType == 'base' ? 1 : 2);
+
+        if (this._doAuthing >= 1) {
+            return;
+        }
+        this._doAuthing = 1;
 
         wx.login({
             success: (res) => {
-                let data = {};
-                data.code = res.code;
-                data.authType = authType;
-                if (typeof authInfo == 'object') {
-                    data.authinfo = JSON.stringify(authInfo);
-                }
                 client.request({
                     type: 'Auth',
-                    data: data,
+                    data: { code: res.code },
                     success: (res) => {
                         this._doAuthing = 0;
                         if (res.errcode == 0) {
-                            this._triggerCallbacks('baseAuth', 'success', this.getUser());
-                            if (this.fullAuthed()) {
-                                this._triggerCallbacks('fullAuth', 'success', this.getUser());
-                            } else {
-                                if (this._hasCallback('fullAuth')) {
-                                    this.fullAuth();
-                                }
-                            }
+                            this._triggerCallbacks('Auth', 'success', this.getUser());
                         } else {
-                            this._triggerCallbacks('baseAuth', 'fail', res);
-                            if (authType == 'full') {
-                                this._triggerCallbacks('fullAuth', 'fail', res);
-                            }
+                            this._triggerCallbacks('Auth', 'fail', res);
                         }
                     },
                     fail: (res) => {
                         this._doAuthing = 0;
-
-                        this._triggerCallbacks('baseAuth', 'fail', res);
-                        if (authType == 'full') {
-                            this._triggerCallbacks('fullAuth', 'fail', res);
-                        }
+                        this._triggerCallbacks('Auth', 'fail', res);
                     }
                 });
             }
@@ -181,10 +104,7 @@ let client = {
         let user = this.getUser();
         return user != null;
     },
-    fullAuthed() {
-        let user = this.getUser();
-        return user && user.fullAuth ? true : false;
-    },
+
     _callbacks: {},
     _addCallback(key, obj) {
         if (!this._callbacks[key]) {
