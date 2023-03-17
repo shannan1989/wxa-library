@@ -4,7 +4,7 @@ import cache from 'cache.js';
 
 let client = {
     request(params) {
-        let url = '', data = {}, header = {};
+        let url = '', method = (params.method || 'POST').toUpperCase(), data = {}, header = {};
 
         if (params.url) {
             url = params.url;
@@ -32,33 +32,56 @@ let client = {
         settings.debug && console.log(url + '&data=' + encodeURIComponent(JSON.stringify(data)));
         settings.debug && console.log('action', params.type, params.data);
 
-        wx.request({
-            url: url,
-            data: data,
-            header: header,
-            method: params.method ? params.method : 'POST',
-            dataType: 'json',
-            responseType: 'text',
-            success: function (res) {
-                if (res.statusCode == 200) {
-                    for (let key in res.data.caches) {
-                        cache.add(key, res.data.caches[key]);
-                    }
-                    for (let key in res.data.cookies) {
-                        cookie.add(key, res.data.cookies[key]);
-                    }
-                    params.success && params.success(res.data);
-                } else {
-                    params.fail && params.fail(res);
+        let successCallback = function (res) {
+            if (res.statusCode == 200) {
+                for (let key in res.data.caches) {
+                    cache.add(key, res.data.caches[key]);
                 }
-            },
-            fail: function (res) {
+                for (let key in res.data.cookies) {
+                    cookie.add(key, res.data.cookies[key]);
+                }
+                params.success && params.success(res.data);
+            } else {
                 params.fail && params.fail(res);
-            },
-            complete: function (res) {
-                params.complete && params.complete(res);
             }
-        });
+        };
+        let failCallback = function (res) {
+            params.fail && params.fail(res);
+        };
+        let completeCallback = function (res) {
+            params.complete && params.complete(res);
+        };
+
+        if (method == 'UPLOAD') {
+            let file = params.file || {};
+
+            wx.uploadFile({
+                url: url,
+                filePath: file.path,
+                name: file.name,
+                formData: data,
+                header: header,
+                success: successCallback,
+                fail: failCallback,
+                complete: completeCallback
+            });
+        } else {
+            wx.request({
+                url: url,
+                data: data,
+                header: header,
+                method: method,
+                dataType: 'json',
+                responseType: 'text',
+                success: successCallback,
+                fail: failCallback,
+                complete: completeCallback
+            });
+        }
+    },
+    upload(params) {
+        params.method = 'upload';
+        this.request(params)
     },
     _doAuthing: 0,
     auth(options) {
