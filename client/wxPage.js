@@ -1,5 +1,4 @@
 import client from 'client.js';
-import form from 'form.js';
 
 function prependFunction(options, name, func) {
     if (options[name]) {
@@ -15,15 +14,9 @@ function prependFunction(options, name, func) {
 }
 
 let WxPage = function (options) {
-    let wxPage = options.wxPage;
+    let wxPage = options.wxPage || {};
 
-    if (wxPage && wxPage.enableFormSubmit) {
-        prependFunction(options, 'onFormSubmit', function (e) { form.add(e.detail.formId); });
-        prependFunction(options, 'onUnload', function () { form.flush(); });
-        prependFunction(options, 'onHide', function () { form.flush(); });
-    }
-
-    if (wxPage && wxPage.enablePageRequest) {
+    if (wxPage.enablePageRequest) {
         options.pageRequest = function (opts) {
             if (this.data.status == 'loading' || this.data.status == 'auth') {
                 return;
@@ -70,15 +63,7 @@ let WxPage = function (options) {
             if (!opts.auth) {// 无需登录
                 successCallback();
             } else {
-                let func = opts.auth.type == 'full' ? 'fullAuth' : 'baseAuth';
-                client[func]({
-                    auth: (res) => {
-                        if (!isUpdate) {
-                            if (this.data.loadStatus != 'success') {
-                                this.setData({ loadStatus: 'auth' });
-                            }
-                        }
-                    },
+                client.auth({
                     success: (res) => {
                         opts.auth.success && opts.auth.success();
                         successCallback();
@@ -97,7 +82,7 @@ let WxPage = function (options) {
         };
     }
 
-    if (wxPage && wxPage.enableNextPage) {
+    if (wxPage.enableNextPage) {
         options.__onLoad = options.onLoad;
         options.onLoad = function (opts) {
             if (opts.nextPage) {
