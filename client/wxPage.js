@@ -60,6 +60,11 @@ let WxPage = function (options) {
                 opts.request || this.setData({ loadStatus: 'success' });
             };
 
+            let options = wx.getLaunchOptionsSync();
+            if (options.scene == 1154) {
+                opts.auth = null;
+            }
+
             if (!opts.auth) {// 无需登录
                 successCallback();
             } else {
