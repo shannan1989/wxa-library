@@ -10,7 +10,7 @@
     opacity: 0;
 }
 
-.scroll_top image {
+.scroll_top_image {
     width: 80rpx;
     height: 80rpx;
     margin: 10rpx;
