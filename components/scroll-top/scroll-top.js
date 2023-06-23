@@ -22,7 +22,7 @@ Component({
         },
         bottom: {
             type: Number,
-            value: 100
+            value: 150
         }
     },
     data: {},
@@ -50,7 +50,7 @@ Component({
         onTapScrollTop() {
             wx.pageScrollTo({
                 scrollTop: 0,
-                duration: this._platform == 'android' ? 1000 : 0
+                duration: 1000
             });
         }
     }
