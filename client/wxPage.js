@@ -16,6 +16,18 @@ function prependFunction(options, name, func) {
 let WxPage = function (options) {
     let wxPage = options.wxPage || {};
 
+    if (wxPage.enableAuth) {
+        options.auth = function (callback) {
+            wx.showLoading({ title: 'Loading', mask: true });
+            client.auth({
+                success: () => {
+                    typeof callback == "function" && callback();
+                    wx.hideLoading();
+                }
+            });
+        };
+    }
+
     if (wxPage.enablePageRequest) {
         options.pageRequest = function (opts) {
             if (this.data.status == 'loading' || this.data.status == 'auth') {
